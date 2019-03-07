@@ -28,7 +28,8 @@ body {
     background-color: #e6f7ff;
     box-shadow: 0px 3px 5px gray;
     padding: 4px;
-    margin-bottom: 30px;
+    margin-top: 0px;
+    margin-bottom: 20px;
 }
 
 .head-container {
@@ -122,18 +123,8 @@ footer span {
 
 /* media query for content-container/twitter sidebar */
 @media only screen and (min-width: 1065px) { 
-    .content-container {
-        grid-template-columns: auto auto;
-        grid-column-gap: 30px;
-    }
-
-    #left-pane {
+    .left-pane {
         grid-column: 1;
-    }
-    
-    #right-pane {
-        grid-column: 2;
-        padding-top: 25px;
     }
 
     #twitter {
@@ -189,7 +180,7 @@ footer span {
     }
 
     .container section {
-        grid-column-start: 2;
+        grid-column: 2;
         padding: 0;
     }
 
@@ -232,7 +223,7 @@ footer span {
         display: none;
     }
 
-    #left-pane {
+    .left-pane {
         max-width: 740px;
     }
 }
