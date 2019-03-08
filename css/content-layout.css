@@ -123,8 +123,18 @@ footer span {
 
 /* media query for content-container/twitter sidebar */
 @media only screen and (min-width: 1065px) { 
+    .content-container {
+        grid-template-columns: auto auto;
+        grid-column-gap: 30px;
+    }
+
     .left-pane {
         grid-column: 1;
+    }
+    
+    .right-pane {
+        grid-column: 2;
+        padding-top: 25px;
     }
 
     #twitter {
@@ -145,7 +155,7 @@ footer span {
     }
 
     .container header {
-        padding: 0 20px 7px 20px;
+        padding: 7px 20px 7px 20px;
     }
 
     header {
@@ -225,6 +235,10 @@ footer span {
 
     .left-pane {
         max-width: 740px;
+    }
+
+    .content-centered {
+        margin: 0 auto;
     }
 }
 
