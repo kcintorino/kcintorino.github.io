@@ -134,11 +134,6 @@ footer span {
     
     .right-pane {
         grid-column: 2;
-        padding-top: 25px;
-    }
-
-    #twitter {
-        margin-top: 43px;
     }
 }
 
@@ -239,6 +234,11 @@ footer span {
 
     .content-centered {
         margin: 0 auto;
+    }
+
+    #title {
+        max-width: 740px;
+        margin: .83em auto;
     }
 }
 
