@@ -104,10 +104,9 @@ section {
     margin-top: 0px;
 }
 
-.tbl-coaches {
+.tbl {
     border-spacing: 15px 0;
-    font-size:14px;
-    min-width: 940px;
+    font-size: 14px;
 }
 
 .grid-item-header {
