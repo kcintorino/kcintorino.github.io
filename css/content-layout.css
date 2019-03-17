@@ -24,6 +24,10 @@ body {
     grid-template-columns: auto;
 }
 
+.left-pane-grid > * {
+    min-width: 0;
+}
+
 .left-pane-item {
     background-color: #e6f7ff;
     box-shadow: 0px 3px 5px gray;
@@ -98,6 +102,16 @@ section {
 .sub-section {
     padding-left: 10px;
     margin-top: 0px;
+}
+
+.tbl-coaches {
+    border-spacing: 15px 0;
+    font-size:14px;
+    min-width: 940px;
+}
+
+.grid-item-header {
+    padding-top: 5px;
 }
 
 footer {
@@ -235,7 +249,7 @@ footer span {
     }
 
     .left-pane {
-        max-width: 850px;
+        max-width: 960px;
     }
 
     /* Not centering single-column pages because Kevin
