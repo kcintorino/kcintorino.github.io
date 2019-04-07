@@ -433,14 +433,14 @@
 
             function returnMins(secs) {
                 if (secs > 59.9) {
-                    var mins = Math.round(secs / 60);
+                    var mins = Math.floor(secs / 60);
                     var mod = secs % 60;
                     var secs_n;
 
-                    if (mod < 10) secs_n = "0".concat(mod);
-                    else secs_n = mod.toString();
+                    if (mod < 10) secs_n = "0".concat(mod.toFixed(2));
+                    else secs_n = mod.toFixed(2);
 
-                    return mins.toString() + ":" + secs_n; 
+                    return mins.toString() + ":" + secs_n;
                 }
                 else {
                     return secs.toString();
