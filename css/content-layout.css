@@ -140,6 +140,14 @@ footer span {
     transition: .3s;
 }
 
+#tbl-pace {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-spacing: 7px;
+    display: flex;
+    align-items: center;
+}
+
 /* media query for content-container/twitter sidebar */
 @media only screen and (min-width: 1065px) { 
     .content-container {
