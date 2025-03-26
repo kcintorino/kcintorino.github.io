@@ -1,0 +1,22 @@
+input.no-spin[type='number'] {
+    -webkit-appearance: textfield;
+}
+
+.plain {
+    -webkit-appearance: none;
+    border: none;
+    border-bottom: 1px solid #043249;
+    background: #e6f7ff;
+    font-size: 20px;
+    width:60px;
+    text-align:right;
+}
+
+.plain::placeholder {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.plain:focus {
+    outline: none;
+}

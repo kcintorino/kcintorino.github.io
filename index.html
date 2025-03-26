@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Pace Calculator</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/content-layout.css">
+        <link rel="stylesheet" type="text/css" href="./css/control-layout.css">
+    </head>
+    <body>
+        <div id="app" class="container">
+            <section role="main" class="content content-container">
+                <h1 id="title" class="navy-text">Pace Caculator</h1>
+                <div class="left-pane left-pane-grid">
+                    <div class="left-pane-item">
+                        <span>Enter your 100% pace - either race pace, or target practice pace.</span>
+                        <br>
+                        <br>
+                        <div style="margin-bottom:15px;">
+                            <input v-model="digit" :placeholder="[[clock]]" @keyup.delete.exact.stop="removeDigit" @keyup="addDigit" 
+                              inputmode="numeric" class="no-spin plain" @click.right.prevent @paste.prevent />
+                        </div>
+
+                        <table class="tbl-pace tbl-hide" id="tbl" :style="{ visibility: showPacing }">
+                            <tr>
+                                <td class="percent">90%</td>
+                                <td class="pace">{{ p90 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="percent">80%</td>
+                                <td class="pace">{{ p80 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="percent">70%</td>
+                                <td class="pace">{{ p70 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="percent">60%</td>
+                                <td class="pace">{{ p60 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="percent">50%</td>
+                                <td class="pace">{{ p50 }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            <!--<footer>
+                <span>Site created by Keaton Cintorino.</span>
+            </footer>-->
+        </div>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+                }
+            }
+        </script>
+
+        <script type="module">
+            import { createApp, ref } from 'vue'
+
+            createApp({
+                setup() {
+                    var digits = [0, 0, 0, 0]
+                    const clock = ref('00:00')
+                    const digit = ref('')
+
+                    const showPacing = ref('hidden')
+                    const p90 = ref(0)
+                    const p80 = ref(0)
+                    const p70 = ref(0)
+                    const p60 = ref(0)
+                    const p50 = ref(0)
+
+                    function addDigit() {
+                        let re_num = /[0-9]/
+                        let len = digits.length
+
+                        if (!re_num.test(digit.value)) {
+                            digit.value = ''
+                            return
+                        }
+
+                        // make sure we have room
+                        if (Number(digits[0]) === 0) {
+                            for (var i = 0; i < len - 1; i++) {
+                                digits[i] = digits[i+1];
+                            }
+                            digits[len-1] = digit.value;
+
+                            validateDigits()
+                            clock.value = joinDigits()
+                        }
+
+                        digit.value = ''
+                        calcPacing()
+                    }
+
+                    function removeDigit() {
+                        let len = digits.length
+
+                        for (let i = len - 1; i > 0; i--) {
+                            digits[i] = digits[i-1]
+                        }
+
+                        digits[0] = 0
+
+                        validateDigits()
+                        clock.value = joinDigits()
+                        calcPacing()
+                    }
+
+                    function joinDigits() {
+                        return "" + digits[0] + digits[1] + ":" + digits[2] + digits[3]
+                    }
+
+                    function returnSeconds() {
+                        // make sure all digits treated as numbers....
+                        let minTens = Number(digits[0] * 10)
+                        let minOnes = Number(digits[1])
+                        let secTens = Number(digits[2] * 10)
+                        let secOnes = Number(digits[3])
+
+                        var goalSeconds = (minTens + minOnes) * 60
+                        goalSeconds += (secTens + secOnes)
+
+                        return goalSeconds
+                    }
+
+                    function validateDigits() {
+                        // make sure we're not over max allowed time (60 mins, 00 secs)
+                        let total = returnSeconds()
+
+                        if (total > 60 * 60) {
+                            digits = [6, 0, 0, 0]
+                            return
+                        }
+
+                        // if user finished entering times and seconds > 60, fix formatting for them
+                        if (digits[0] > 0) {
+                            let seconds = Number(digits[2] * 10) + Number(digits[3])
+
+                            if (seconds >= 60) {
+                                seconds -= 60
+                                let secString = (seconds > 9) ? "" + seconds : "0" + seconds
+                                digits[2] = Number(secString[0])
+                                digits[3] = Number(secString[1])
+
+                                let minutes = Number(digits[0] * 10) + Number(digits[1]) + 1
+                                let minString = (minutes > 9) ? "" + minutes : "0" + minutes
+                                digits[0] = Number(minString[0])
+                                digits[1] = Number(minString[1])
+                            }
+                        }
+                    }
+
+                    function calcPacing() {
+                        let goalSeconds = returnSeconds()
+
+                        if (goalSeconds > 0) {
+                            p90.value = dilateTime( goalSeconds * 1.10)
+                            p80.value = dilateTime( goalSeconds * 1.20)
+                            p70.value = dilateTime( goalSeconds * 1.30)
+                            p60.value = dilateTime( goalSeconds * 1.40)
+                            p50.value = dilateTime( goalSeconds * 1.50)
+
+                            showPacing.value = 'visible'
+                        }
+                        else showPacing.value = 'hidden'
+                    }
+
+                    function dilateTime(seconds) {
+                        var mins = Math.floor(seconds / 60)
+                        var secs = (seconds % 60).toFixed(2)
+                        var time = ""
+
+                        if (mins > 0)
+                            time = (mins >= 10) ? mins + ":" : "0" + mins + ":"
+
+                        if (secs >= 10)
+                            time += "" + secs
+                        else
+                            time += "0" + secs
+
+                        return time
+                    }
+
+                    return {
+                        digit,
+                        clock,
+                        showPacing,
+                        p90,
+                        p80,
+                        p70,
+                        p60,
+                        p50,
+                        addDigit,
+                        removeDigit
+                    }
+                }
+            }).mount('#app')
+        </script>
+
+        <script type="text/javascript">
+            window.onload = function() {
+                document.getElementById("tbl").className = "tbl-pace";
+            };
+        </script>
+    </body>
+</html>
